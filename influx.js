@@ -7,11 +7,12 @@ class Influx {
         this.bucket = config.bucket;
         this.measurement = config.measurement;
         this.deviceHost = config.deviceHost;
+        this.org = config.org
         this.influxAPI = new InfluxDB({url: config.host, token: config.token})
     }
 
     async write(speedtestServer, ping, jitter, download, upload, packetLoss) {
-        const writeAPI = this.influxAPI.getWriteApi('', this.bucket)
+        const writeAPI = this.influxAPI.getWriteApi(this.org, this.bucket)
         const point = new Point(this.measurement)
             .tag('host', this.deviceHost)
             .stringField('speedtestServer', speedtestServer)
