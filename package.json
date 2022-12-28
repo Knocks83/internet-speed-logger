@@ -1,0 +1,13 @@
+{
+  "name": "internet-speed-logger",
+  "version": "0.1",
+  "private": true,
+  "description": "Log the internet speed on an InfluxDB Database",
+  "scripts": {
+    "start": "node ./run.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.33.0",
+    "speedtest-net": "^2.2.0"
+  }
+}
