@@ -1,6 +1,6 @@
 {
   "name": "internet-speed-logger",
-  "version": "0.1",
+  "version": "1.0",
   "private": true,
   "description": "Log the internet speed on an InfluxDB Database",
   "scripts": {
