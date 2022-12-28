@@ -11,16 +11,16 @@ async function run() {
         const speedTestValue = await speedTest(config.speedtest);
 
         // Write the data to Influx. Since the bandwidth is in bytes per second, it gets multiplied by 8 to get bits per second (bps)
-        await influxObj.write(config.speedtest.host, speedTestValue.ping.latency, speedTestValue.ping.jitter, speedTestValue.download.bandwidth * 8,
+        await influxObj.write(speedTestValue.server.host, speedTestValue.ping.latency, speedTestValue.ping.jitter, speedTestValue.download.bandwidth * 8,
             speedTestValue.upload.bandwidth * 8, speedTestValue.packetLoss);
         
+    } catch (err) {
+        console.log(err.message);
+    } finally {
         // Call self back
         setTimeout(async () => {
             await run();
         }, config.general.delay);
-
-    } catch (err) {
-        console.log(err.message);
     }
 }
 
