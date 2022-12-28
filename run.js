@@ -17,13 +17,13 @@ async function run() {
         // Call self back
         setTimeout(async () => {
             await run();
-        }, 5000);
+        }, config.general.delay);
 
     } catch (err) {
         console.log(err.message);
     }
 }
 
-setTimeout(async () => {
+(async () => {
     await run();
-}, 5000);
+})();
