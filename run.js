@@ -16,6 +16,9 @@ async function run() {
         
     } catch (err) {
         console.log(err.message);
+
+        // Write a point with no internet connection
+        await influxObj.write(config.speedtest.host, 0, 0, 0, 0, 100);
     } finally {
         // Call self back
         setTimeout(async () => {
