@@ -26,14 +26,20 @@ class Influx {
      */
     async write(speedtestServer, ping, jitter, download, upload, packetLoss) {
         const writeAPI = this.influxAPI.getWriteApi(this.org, this.bucket)
-        const point = new Point(this.measurement)
+        var point = new Point(this.measurement)
             .tag('host', this.deviceHost)
             .stringField('speedtestServer', speedtestServer)
             .floatField('ping', ping)
             .floatField('jitter', jitter)
             .intField('download', download)
             .intField('upload', upload)
-            .floatField('packetLoss', packetLoss)
+        
+        // Since sometimes the speedtest has all the data but the packetloss, just write it only when not null.
+        // Even if packetLoss is undefined this check still works
+        if (packetLoss != null ) {
+            point.floatField('packetLoss', packetLoss)
+        }
+            
         writeAPI.writePoint(point)
         await writeAPI.close()
     }
