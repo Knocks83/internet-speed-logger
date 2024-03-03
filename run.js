@@ -10,9 +10,12 @@ async function run() {
         // Check the internet speed
         const speedTestValue = await speedTest(config.speedtest);
 
-        // Write the data to Influx. Since the bandwidth is in bytes per second, it gets multiplied by 8 to get bits per second (bps)
-        await influxObj.write(speedTestValue.server.host, speedTestValue.ping.latency, speedTestValue.ping.jitter, speedTestValue.download.bandwidth * 8,
-            speedTestValue.upload.bandwidth * 8, speedTestValue.packetLoss);
+        // If the values for download and upload are NOT zero, then create the Influx point
+        if (!(speedTestValue.download.bandwidth == 0 && speedTestValue.upload.bandwidth == 0)) {
+            // Write the data to Influx. Since the bandwidth is in bytes per second, it gets multiplied by 8 to get bits per second (bps)
+            await influxObj.write(speedTestValue.server.host, speedTestValue.ping.latency, speedTestValue.ping.jitter,speedTestValue.download.bandwidth * 8,
+                speedTestValue.upload.bandwidth * 8, speedTestValue.packetLoss);
+        }
         
     } catch (err) {
         console.log(err.message);
